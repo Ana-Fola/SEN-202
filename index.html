@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIM - Security Incident Mapping</title>
+    <style>
+        /* Basic Reset and Typography */
+        * {
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #f4f7f6;
+            color: #333;
+        }
+        
+        /* Main App Container */
+        .app-container {
+            max-width: 500px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            min-height: 100vh;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        /* Header Navigation */
+        .header {
+            background-color: #1a202c;
+            color: #fff;
+            padding: 15px 20px;
+            text-align: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 20px;
+        }
+        .nav-btn {
+            background: none;
+            border: 1px solid #fff;
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        /* Content Area */
+        .content {
+            padding: 20px;
+        }
+
+        /* SOS Button */
+        .sos-btn {
+            width: 100%;
+            background-color: #e53e3e;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            padding: 30px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(229, 62, 62, 0.3);
+            transition: background-color 0.3s;
+        }
+        .sos-btn:active {
+            background-color: #c53030;
+        }
+
+        /* Map Placeholder */
+        .map-placeholder {
+            width: 100%;
+            height: 250px;
+            background-color: #e2e8f0;
+            border: 2px dashed #cbd5e0;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #718096;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        /* Form Styling */
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"], select, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #cbd5e0;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        /* Toggle Switch Styling */
+        .toggle-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            background-color: #edf2f7;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .toggle-container input[type="checkbox"] {
+            margin-right: 10px;
+            width: 20px;
+            height: 20px;
+        }
+
+        /* Submit Button */
+        .submit-btn {
+            width: 100%;
+            background-color: #3182ce;
+            color: white;
+            font-size: 18px;
+            padding: 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        <!-- Header -->
+        <div class="header">
+            <h1>SIM Platform</h1>
+            <div>
+                <button class="nav-btn" onclick="toggleView('dashboard')">Home</button>
+                <button class="nav-btn" onclick="toggleView('form')">Report</button>
+            </div>
+        </div>
+
+        <!-- Content -->
+        <div class="content">
+            
+            <!-- View 1: Home Dashboard -->
+            <div id="dashboard-view">
+                <button class="sos-btn" onclick="triggerSOS()">🚨 Quick SOS Alert</button>
+                
+                <div class="map-placeholder">
+                    📍 Live Danger Map (Placeholder)
+                </div>
+            </div>
+
+            <!-- View 2: Incident Reporting Form -->
+            <div id="form-view" style="display: none;">
+                <h2>Report an Incident</h2>
+                <form id="incident-form" onsubmit="submitReport(event)">
+                    
+                    <div class="form-group">
+                        <label for="incident-type">Incident Type</label>
+                        <select id="incident-type" required>
+                            <option value="">Select a category...</option>
+                            <option value="theft">Theft or Stealing</option>
+                            <option value="harassment">Harassment or Rape</option>
+                            <option value="assault">Physical Assault</option>
+                            <option value="burglary">Burglary or Break-in</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="location">Location</label>
+                        <input type="text" id="location" placeholder="e.g., Block B, North Gate" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <textarea id="description" placeholder="Briefly describe what happened..." required></textarea>
+                    </div>
+
+                    <div class="toggle-container">
+                        <input type="checkbox" id="anonymous-toggle">
+                        <label for="anonymous-toggle" style="margin: 0; cursor: pointer;">Report Completely Anonymously</label>
+                    </div>
+
+                    <button type="submit" class="submit-btn">Submit Report</button>
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // Function to switch between the Dashboard and the Form
+        function toggleView(viewName) {
+            const dashboard = document.getElementById('dashboard-view');
+            const form = document.getElementById('form-view');
+
+            if (viewName === 'dashboard') {
+                dashboard.style.display = 'block';
+                form.style.display = 'none';
+            } else if (viewName === 'form') {
+                dashboard.style.display = 'none';
+                form.style.display = 'block';
+            }
+        }
+
+        // Function for the SOS Button
+        function triggerSOS() {
+            // This alert mimics the immediate feedback of the security integration
+            alert("⚠️ SOS ALERT TRIGGERED!\nCampus security has been notified immediately.");
+        }
+
+        // Function to handle Form Submission
+        function submitReport(event) {
+            // Prevent the page from reloading when the form is submitted
+            event.preventDefault(); 
+            
+            // Check if the user selected anonymous mode
+            const isAnonymous = document.getElementById('anonymous-toggle').checked;
+            
+            if (isAnonymous) {
+                alert("✅ Report submitted successfully (Anonymous Mode Active).");
+            } else {
+                alert("✅ Report submitted successfully.");
+            }
+
+            // Reset the form fields and route back to the home dashboard
+            document.getElementById('incident-form').reset();
+            toggleView('dashboard');
+        }
+    </script>
+
+</body>
+</html>
