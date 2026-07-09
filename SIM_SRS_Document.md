@@ -3,6 +3,8 @@
 ### 1. Introduction & Component Interaction
 **System Purpose:**
 The Security Incident Mapping (SIM) platform is a web-based system designed to reduce community crime rates on campus by enabling rapid, reliable incident reporting and mapping for students, landlords, and security personnel.
+**Live Web Interface:** https://ana-fola.github.io/SEN-202/
+
 **Component Interaction:**
 The system operates through a continuous data flow between the user interface and the central database:
  * **Input Layer:** Students and Landlords interact with the web interface to submit reports or trigger SOS alerts.
